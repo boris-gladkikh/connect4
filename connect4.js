@@ -111,6 +111,7 @@ function handleClick(evt) {
   // place piece in board and add to HTML table
   // TODO: add line to update in-memory board
   placeInTable(y, x);
+  board[y][x]= currPlayer;
 
   // check for win
   if (checkForWin()) {
@@ -119,9 +120,21 @@ function handleClick(evt) {
 
   // check for tie
   // TODO: check if all cells in board are filled; if so call, call endGame
+  if (isBoardFull()) {
+    endGame();
+  }
 
   // switch players
   // TODO: switch currPlayer 1 <-> 2
+}
+
+function isBoardFull(){
+    return board.every(function(row){
+      return row.every(function(cell) {
+        return cell !== null;
+      
+   })
+  }); 
 }
 
 /** checkForWin: check board cell-by-cell for "does a win start here?" */
