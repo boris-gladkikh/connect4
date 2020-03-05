@@ -20,15 +20,14 @@ const board = []; // array of rows, each row is array of cells  (board[y][x])
 
 function makeBoard() {
   // TODO: set "board" to empty HEIGHT x WIDTH matrix array
-  let row = []
   
-  for (let i = 0; i < WIDTH; i++) {
-    row.push(null);
+  for (let y = 0; y < HEIGHT; y++){
+    board.push([]);
+    for (let x = 0; x < WIDTH; x++) {
+      board[y].push(null);
+    }
   }
 
-  for (let i = 0; i < HEIGHT; i++) {
-    board.push(row);
-  }
   //log to make sure our board looks good
   //console.log("this is the board", board);
 
@@ -73,8 +72,10 @@ function makeHtmlBoard() {
 /** findSpotForCol: given column x, return top empty y (null if filled) */
 
 function findSpotForCol(x) {
-  // TODO: write the real version of this, rather than always returning 0
-  return 0;
+  for (let i = HEIGHT - 1; i>= 0 ; i--) {
+    if (board[i][x] === null) return i;
+  }
+  return null;
 }
 
 /** placeInTable: update DOM to place piece into HTML table of board */
@@ -86,7 +87,7 @@ function placeInTable(y, x) {
 
   gamePiece.classList.add("piece", `p${currPlayer}`);
   targetCell.append(gamePiece);
-  console.log("y & x" +y +" " + x + " " +targetCell);
+  //console.log("y & x" +y +" " + x + " " +targetCell);
 
 }
 
@@ -111,21 +112,34 @@ function handleClick(evt) {
   // place piece in board and add to HTML table
   // TODO: add line to update in-memory board
   placeInTable(y, x);
-  board[y][x]= currPlayer;
+  let targetRow=board[y];
+  console.log("targetRow "+targetRow);
+  targetRow[x] = currPlayer;
+  
 
-  // check for win
+
+  //check for win
   if (checkForWin()) {
     return endGame(`Player ${currPlayer} won!`);
   }
-
+  
+  
+ 
   // check for tie
   // TODO: check if all cells in board are filled; if so call, call endGame
   if (isBoardFull()) {
     endGame();
   }
+  
+  switchPlayer();
 
-  // switch players
-  // TODO: switch currPlayer 1 <-> 2
+}
+
+//swap player at end of go
+function switchPlayer(){
+
+  currPlayer = currPlayer===1  ? 2 : 1;
+  console.log("Player "+currPlayer);
 }
 
 function isBoardFull(){
