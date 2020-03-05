@@ -85,7 +85,8 @@ function placeInTable(y, x) {
   let targetCell = document.getElementById(`${y}-${x}`);
 
   gamePiece.classList.add("piece", `p${currPlayer}`);
-  targetCell.appendChild(gamePiece);
+  targetCell.append(gamePiece);
+  console.log("y & x" +y +" " + x + " " +targetCell);
 
 }
 
