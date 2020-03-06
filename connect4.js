@@ -72,8 +72,8 @@ function makeHtmlBoard() {
 /** findSpotForCol: given column x, return top empty y (null if filled) */
 
 function findSpotForCol(x) {
-  for (let i = HEIGHT - 1; i>= 0 ; i--) {
-    if (board[i][x] === null) return i;
+  for (let row = HEIGHT - 1; row>= 0 ; row--) {
+    if (board[row][x] === null) return row;
   }
   return null;
 }
@@ -93,8 +93,11 @@ function placeInTable(y, x) {
 
 /** endGame: announce game end */
 
-function endGame(msg) {
+function endGame(msg="wawoo") {
   // TODO: pop up alert message
+  alert(msg);
+  resetBoard();
+  resetLogic();
 }
 
 /** handleClick: handle click of column top to play piece */
@@ -112,8 +115,8 @@ function handleClick(evt) {
   // place piece in board and add to HTML table
   // TODO: add line to update in-memory board
   placeInTable(y, x);
-  let targetRow=board[y];
-  console.log("targetRow "+targetRow);
+  let targetRow = board[y];
+  //console.log("targetRow " + targetRow);
   targetRow[x] = currPlayer;
   
 
@@ -128,7 +131,7 @@ function handleClick(evt) {
   // check for tie
   // TODO: check if all cells in board are filled; if so call, call endGame
   if (isBoardFull()) {
-    endGame();
+    endGame("it's a tie!");
   }
   
   switchPlayer();
@@ -142,6 +145,7 @@ function switchPlayer(){
   console.log("Player "+currPlayer);
 }
 
+//checks to see if all spots are filled up
 function isBoardFull(){
     return board.every(function(row){
       return row.every(function(cell) {
@@ -150,6 +154,24 @@ function isBoardFull(){
    })
   }); 
 }
+
+
+ function resetLogic(){
+   for (let i = 0; i < board.length; i++) {
+     for (let j = 0; j < board[i].length; j++) {
+       board[i][j] = null;
+     }
+   }
+
+
+ }
+
+ function resetBoard(){
+   let gamePieces = document.querySelectorAll(".piece");
+   for (let piece of gamePieces) {
+     piece.remove();
+   }
+ }
 
 /** checkForWin: check board cell-by-cell for "does a win start here?" */
 
